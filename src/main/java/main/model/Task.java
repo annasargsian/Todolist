@@ -1,13 +1,12 @@
-package main;
+package main.model;
 
-import javax.persistence.*;
-
-@Entity
 public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
     private String name;
+
+    public Task() {
+    }
 
     public Task(String name) {
         this.name = name;
@@ -28,4 +27,5 @@ public class Task {
     public void setName(String name) {
         this.name = name;
     }
+
 }
