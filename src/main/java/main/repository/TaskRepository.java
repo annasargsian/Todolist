@@ -14,14 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TaskRepository {
 
     private final Map<Integer, Task> tasks = new ConcurrentHashMap<>();
-    private final AtomicInteger TASK_ID_HOLDER = new AtomicInteger();
+    private final AtomicInteger counter = new AtomicInteger();
 
 
-    public int addToDo(Task task) {
-        final int currentId = TASK_ID_HOLDER.incrementAndGet();
+    public Task addToDo(Task task) {
+        final int currentId = counter.incrementAndGet();
         task.setId(currentId);
         tasks.put(currentId, task);
-        return currentId;
+        return task;
     }
 
     public List<Task> getAllTasks() {
@@ -35,21 +35,20 @@ public class TaskRepository {
         throw new NotFoundException();
     }
 
-    public boolean updateTask(int taskId,Task task) {
+    public Task updateTask(int taskId, Task task) {
         if (tasks.containsKey(taskId)) {
             task.setId(taskId);
             tasks.put(taskId, task);
-            return true;
+            return task;
         }
-        return false;
+        throw new NotFoundException();
     }
 
-    public void deleteTask(int taskId) {
+    public Task deleteTask(int taskId) {
         if (tasks.containsKey(taskId)) {
-            tasks.remove(taskId);
-        } else {
-            throw new NotFoundException();
+            return tasks.remove(taskId);
         }
+        throw new NotFoundException();
 
     }
 }
